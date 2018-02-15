@@ -40,6 +40,18 @@ def left(root):
 def right(root):
     return root * 2 + 2
 
+def nearest_pow_of_two(num):
+    # works only for int32
+    num = num | (num >> 1)
+    num = num | (num >> 2)
+    num = num | (num >> 4)
+    num = num | (num >> 8)
+    num = num | (num >> 16)
+    return (num + 1) >> 1
+
+def leaves(arr_size):
+    return nearest_pow_of_two(arr_size) - 1
+
 def heapify(arr, root, depth):
     l = left(root)
     r = right(root)
@@ -58,7 +70,8 @@ def heapify(arr, root, depth):
     return arr
 
 def heap_sort(arr):
-    for i in xrange(len(arr) - 1, -1, -1):
+    non_leaf = leaves(len(arr) - 1)
+    for i in xrange(non_leaf, -1, -1):
         heapify(arr, i, len(arr))
     
     for i in xrange(len(arr) - 1, -1, -1):
@@ -69,6 +82,17 @@ def heap_sort(arr):
 
 def heapify_all(arr):
     return heapify(arr, 0, len(arr))
+
+def test_find_leaves():
+    assert 0 == leaves(1)
+
+    assert 1 == leaves(2)
+    assert 1 == leaves(3)
+
+    assert 3 == leaves(4)
+    assert 3 == leaves(5)
+    assert 3 == leaves(6)
+    assert 3 == leaves(7)
 
 def test_heapify_one():
     assert [1] == heapify_all([1])

@@ -52,6 +52,8 @@ def nearest_pow_of_two(num):
 def leaves(arr_size):
     return nearest_pow_of_two(arr_size) - 1
 
+# pushes the largest element on top
+# assumes that the given array contains a correctly structured heap
 def heapify(arr, root, depth):
     l = left(root)
     r = right(root)
@@ -69,11 +71,17 @@ def heapify(arr, root, depth):
 
     return arr
 
-def heap_sort(arr):
+def build_heap(arr):
+    # build the heap starting from the tree leaves
     non_leaf = leaves(len(arr) - 1)
     for i in xrange(non_leaf, -1, -1):
         heapify(arr, i, len(arr))
+
+def heap_sort(arr):
+    # build the here with the largest element at its root
+    build_heap(arr)
     
+    # move the largest element to the end and heapify again
     for i in xrange(len(arr) - 1, -1, -1):
         arr[0], arr[i] = arr[i], arr[0]
         heapify(arr, 0, i)
